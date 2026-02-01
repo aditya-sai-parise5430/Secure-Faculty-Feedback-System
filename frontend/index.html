@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Faculty Feedback System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Professional University Palette */
+            --primary: #1a365d;
+            /* Navy Blue */
+            --primary-light: #2c5282;
+            --secondary: #d4af37;
+            /* Academic Gold */
+            --secondary-dark: #b8951d;
+
+            --bg-body: #f8f9fa;
+            --bg-surface: #ffffff;
+
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --text-light: #f7fafc;
+
+            --border-color: #e2e8f0;
+            --success: #28a745;
+            --danger: #dc3545;
+            --info: #3182ce;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-family: 'Merriweather', serif;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            color: var(--secondary);
+        }
+
+        /* --- Cards --- */
+        .card {
+            background: var(--bg-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* --- Forms --- */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #cbd5e0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #a0aec0;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* --- Alerts --- */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            border-color: var(--success);
+            color: #22543d;
+        }
+
+        .alert-error {
+            background: #fff5f5;
+            border-color: var(--danger);
+            color: #742a2a;
+        }
+
+        .alert-info {
+            background: #ebf8ff;
+            border-color: var(--info);
+            color: #2c5282;
+        }
+
+        /* --- Authentication View --- */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-body) 0%, #e2e8f0 100%);
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border-top: 5px solid var(--primary);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header img {
+            width: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--primary-light);
+        }
+
+        /* --- Dashboard --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feedback-item {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .rating-badge {
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .badge-high {
+            background-color: var(--success);
+        }
+
+        .badge-mid {
+            background-color: var(--secondary);
+        }
+
+        .badge-low {
+            background-color: var(--danger);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .security-badge {
+            font-size: 0.75rem;
+            background: #e2e8f0;
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const API_URL = 'http://localhost:5001/api';
+        let currentUser = null;
+        let currentView = 'auth';
+
+        // ============================================
+        // API HELPER FUNCTIONS
+        // ============================================
+
+        function setAuth(token, sessionId, user) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('sessionId', sessionId);
+            localStorage.setItem('user', JSON.stringify(user));
+            currentUser = user;
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('sessionId');
+            localStorage.removeItem('user');
+            currentUser = null;
+        }
+
+        async function apiRequest(endpoint, method = 'GET', body = null) {
+            const token = localStorage.getItem('token');
+            const sessionId = localStorage.getItem('sessionId');
+
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+                headers['X-Session-Id'] = sessionId;
+            }
+
+            const config = {
+                method,
+                headers,
+            };
+
+            if (body) {
+                config.body = JSON.stringify(body);
+            }
+
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`, config);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Request failed');
+                }
+
+                return data;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // ============================================
+        // FEEDBACK API HELPERS
+        // ============================================
+
+        async function fetchFacultyList() {
+            return apiRequest('/feedback/faculty');
+        }
+
+        async function submitAnonymousFeedback(data) {
+            return apiRequest('/feedback', 'POST', data);
+        }
+
+        async function fetchFacultyFeedback() {
+            return apiRequest('/feedback/my');
+        }
+
+        async function fetchAllFeedback() {
+            return apiRequest('/feedback/all');
+        }
+
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+
+        function render() {
+            const app = document.getElementById('app');
+
+            if (!currentUser) {
+                app.innerHTML = renderAuth();
+                attachAuthListeners();
+            } else {
+                app.innerHTML = renderDashboard();
+                attachDashboardListeners();
+            }
+        }
+
+        // ============================================
+        // AUTH VIEW (Login & Register)
+        // ============================================
+
+        function renderAuth() {
+            return `
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <h1>Secure Faculty Feedback</h1>
+                            <p style="color: var(--text-muted); margin-top: 0.5rem;">University Academic Portal</p>
+                        </div>
+
+                        <div class="tabs">
+                            <button class="tab active" onclick="switchTab('login')">Login</button>
+                            <button class="tab" onclick="switchTab('register')">Register</button>
+                        </div>
+
+                        <div id="auth-message"></div>
+
+                        <div id="login-form">
+                            ${renderLoginForm()}
+                        </div>
+
+                        <div id="register-form" class="hidden">
+                            ${renderRegisterForm()}
+                        </div>
+
+                        <div id="otp-form" class="hidden">
+                            ${renderOTPForm()}
+                        </div>
+
+                        <div id="mfa-form" class="hidden">
+                            ${renderMFAForm()}
+                        </div>
+                        
+                        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                            <div class="security-badge" style="justify-content: center;">
+                                <span>🔒 End-to-End Encrypted & Anonymous</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper to toggle password visibility
+        function togglePassword(btn, inputId) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            } else {
+                input.type = "password";
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+            }
+        }
+
+        function renderLoginForm() {
+            return `
+                <form id="login-form-el" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Username or Email</label>
+                        <input type="text" name="username" required placeholder="Enter your ID">
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label>Password</label>
+                        <input type="password" id="login-password" name="password" required placeholder="••••••••" style="padding-right: 40px;">
+                        <button type="button" onclick="togglePassword(this, 'login-password')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: var(--text-muted);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Access Portal
+                    </button>
+                </form>
+            `;
+        }
+
+        function renderRegisterForm() {
+            return `
+                <form id="register-form-el" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Username *</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label>Password * (min 8 chars)</label>
+                        <input type="password" id="register-password" name="password" minlength="8" required style="padding-right: 40px;">
+                        <button type="button" onclick="togglePassword(this, 'register-password')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: var(--text-muted);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" name="full_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role *</label>
+                        <select name="role" required>
+                            <option value="">-- Select Role --</option>
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" name="department" value="Computer Science">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Register Account
+                    </button>
+                </form>
+            `;
+        }
+
+        function renderOTPForm() {
+            return `
+                <form id="otp-form-el" onsubmit="handleVerifyOTP(event)">
+                    <div class="alert alert-info">
+                        We've sent a verification code to your email.
+                    </div>
+                    <div class="form-group">
+                        <label>Enter OTP Code</label>
+                        <input type="text" name="otp" maxlength="6" required style="letter-spacing: 5px; text-align: center; font-size: 1.2rem;">
+                    </div>
+                    <input type="hidden" name="user_id" id="otp-user-id">
+                    <button type="submit" class="btn btn-success btn-block">
+                        Verify Account
+                    </button>
+                </form>
+            `;
+        }
+
+        function renderMFAForm() {
+            return `
+                <form id="mfa-form-el" onsubmit="handleVerifyMFA(event)">
+                    <div class="alert alert-info">
+                        Security Check: Enter the code sent to your email.
+                    </div>
+                    <div class="form-group">
+                        <label>Two-Factor Code</label>
+                        <input type="text" name="otp" maxlength="6" required style="letter-spacing: 5px; text-align: center; font-size: 1.2rem;">
+                    </div>
+                    <input type="hidden" name="temp_token" id="mfa-temp-token">
+                    <button type="submit" class="btn btn-success btn-block">
+                        Verify Login
+                    </button>
+                </form>
+            `;
+        }
+
+        // ============================================
+        // DASHBOARD VIEW
+        // ============================================
+
+        function renderDashboard() {
+            return `
+                <div>
+                    <nav class="navbar">
+                        <div class="container">
+                            <div class="brand">
+                                <span>🎓</span> Secure Feedback
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="text-align: right; font-size: 0.9rem;">
+                                    <div style="font-weight: 600;">${currentUser.full_name}</div>
+                                    <div style="opacity: 0.8; font-size: 0.8rem; text-transform: uppercase;">${currentUser.role}</div>
+                                </div>
+                                <button class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="handleLogout()">
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <div class="container" id="dashboard-content">
+                        ${renderDashboardContent()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboardContent() {
+            if (currentUser.role === 'student') {
+                return renderStudentDashboard();
+            } else if (currentUser.role === 'faculty') {
+                return renderFacultyDashboard();
+            } else if (currentUser.role === 'admin') {
+                return renderAdminDashboard();
+            }
+        }
+
+        function renderStudentDashboard() {
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Submit Faculty Feedback</h3>
+                    </div>
+                    <div class="alert alert-info">
+                        <strong> Privacy Note:</strong> Your feedback is encrypted and completely anonymous. Faculty cannot see who submitted it.
+                    </div>
+                    <div id="feedback-message"></div>
+                    <div id="feedBack-list" class="dashboard-grid">
+                        <!-- Loaded dynamically -->
+                        <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+                            Loading faculty list...
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFacultyDashboard() {
+            return `
+                <div class="card">
+                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3>Student Reviews</h3>
+                        <div id="faculty-qr-container"></div>
+                    </div>
+                    <div id="feedback-list">
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading reviews...</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminDashboard() {
+            return `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h3>Faculty Performance Overview</h3>
+                        <button class="btn btn-secondary" onclick="loadAdminFeedback()">
+                            Refresh Data
+                        </button>
+                    </div>
+                    <div id="admin-container">
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading system data...</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // DATA LOADING
+        // ============================================
+
+        // --- STUDENT: Load Faculty to Review ---
+        async function loadFeedbackForStudent() {
+            const div = document.getElementById('feedBack-list');
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetFacultyId = urlParams.get('faculty_id');
+            const view = urlParams.get('view');
+
+            try {
+                const res = await apiRequest('/feedback/faculty');
+
+
+                if (!res.faculty || res.faculty.length === 0) {
+                    div.innerHTML = '<div style="grid-column: 1/-1; text-align: center;">No faculty members found.</div>';
+                    return;
+                }
+
+                div.innerHTML = res.faculty.map(f => {
+                    // Logic to highlight/focus the target faculty from QR code
+                    const isTarget = targetFacultyId && parseInt(targetFacultyId) === f.faculty_id;
+                    const cardStyle = isTarget ? 'border: 2px solid var(--secondary); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); transform: scale(1.02);' : '';
+                    const titleSuffix = isTarget ? ' <span style="font-size:0.8rem; color:var(--secondary); background:var(--primary); padding:2px 6px; border-radius:4px;">Scanned</span>' : '';
+
+                    return `
+                    <div class="card" style="margin: 0; display: flex; flex-direction: column; height: 100%; ${cardStyle}">
+                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">${f.full_name} ${titleSuffix}</h4>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">${f.department}</p>
+                        
+                        <div style="margin-top: auto;">
+                            <textarea id="fb-text-${f.faculty_id}" placeholder="Write constructive, anonymous feedback..." style="margin-bottom: 0.5rem; min-height: 100px; font-size: 0.9rem;"></textarea>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <input id="fb-rate-${f.faculty_id}" type="number" min="1" max="10" placeholder="Rating (1-10)" style="width: 80px;">
+                                <div style="flex:1; display:flex; align-items:center; font-size: 0.8rem; color: var(--text-muted);">
+                                    (1=Poor, 10=Excellent)
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-block" 
+                                onclick="submitFeedback(${f.faculty_id})">
+                                Submit Anonymously
+                            </button>
+                        </div>
+                    </div>
+                `}).join('');
+
+                // Auto-scroll to target if exists
+                if (targetFacultyId) {
+                    setTimeout(() => {
+                        const targetEl = document.getElementById(`fb-text-${targetFacultyId}`);
+                        if (targetEl) {
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            targetEl.focus();
+                        }
+                    }, 500);
+                }
+
+            } catch (err) {
+                console.error(err);
+                div.innerHTML = '<div style="grid-column: 1/-1;" class="alert alert-error">Failed to load faculty list.</div>';
+            }
+        }
+
+        async function submitFeedback(facultyId) {
+            const feedback_text = document.getElementById(`fb-text-${facultyId}`).value.trim();
+            const rating = document.getElementById(`fb-rate-${facultyId}`).value;
+
+            if (!feedback_text || !rating) {
+                alert('Please provide both feedback text and a rating.');
+                return;
+            }
+
+            try {
+                await apiRequest('/feedback', 'POST', {
+                    faculty_id: facultyId,
+                    feedback_text,
+                    rating
+                });
+
+                alert('Feedback submitted safely! ✔');
+                document.getElementById(`fb-text-${facultyId}`).value = '';
+                document.getElementById(`fb-rate-${facultyId}`).value = '';
+
+            } catch (err) {
+                alert(err.message || 'Submission failed');
+            }
+        }
+
+        // --- FACULTY: Load My Reviews ---
+        async function loadFacultyFeedback() {
+            const container = document.getElementById('feedback-list');
+            const qrContainer = document.getElementById('faculty-qr-container');
+
+            // 1. Load QR Code
+            try {
+                const qrRes = await apiRequest('/feedback/qr');
+                if (qrRes.success && qrRes.qr_code) {
+                    qrContainer.innerHTML = `
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: var(--radius); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow-sm);">
+                            <img src="${qrRes.qr_code}" alt="Feedback QR" style="width: 150px; height: 150px;">
+                            <div style="text-align: left;">
+                                <div style="font-weight: 700; font-size: 1.1rem; color: var(--primary);">Performance QR</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Scan to save/view your<br>feedback summary.</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error("QR Load Error", err);
+            }
+
+            try {
+                const res = await fetchFacultyFeedback();
+
+                if (!res.feedback || res.feedback.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color: var(--text-muted);">No reviews received yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = res.feedback.map(f => {
+                    let badgeClass = f.rating >= 8 ? 'badge-high' : (f.rating >= 5 ? 'badge-mid' : 'badge-low');
+                    return `
+                    <div class="feedback-item">
+                        <div class="feedback-meta">
+                            <span class="rating-badge ${badgeClass}">Rating: ${f.rating}/10</span>
+                            <span>${new Date(f.submitted_at).toLocaleDateString()}</span>
+                        </div>
+                        <p style="color: var(--text-main);">${f.feedback}</p>
+                    </div>
+                `}).join('');
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<div class="alert alert-error">Failed to load reviews.</div>';
+            }
+        }
+
+        // --- ADMIN: Load Dashboard ---
+        async function loadAdminFeedback() {
+            const container = document.getElementById('admin-container');
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted);">Refresing data...</div>';
+
+            try {
+                const data = await apiRequest('/feedback/admin/dashboard');
+
+                if (!data.success) {
+                    container.innerHTML = `<div class="alert alert-error">${data.message || 'Failed to load data'}</div>`;
+                    return;
+                }
+
+                if (!data.faculty_blocks || data.faculty_blocks.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding: 40px; background: var(--bg-body); border-radius: var(--radius);">
+                            <h3>No Data Available</h3>
+                            <p style="color: var(--text-muted);">There are no faculty members in the system yet.</p>
+                        </div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                data.faculty_blocks.forEach(faculty => {
+                    const ratingColor = faculty.average_rating >= 7 ? 'var(--success)' :
+                        (faculty.average_rating >= 4 ? 'var(--secondary)' : 'var(--danger)');
+
+                    const blockHtml = `
+                        <div class="card" style="border-left: 5px solid ${ratingColor};">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                                <div>
+                                    <h3 style="margin-bottom: 5px;">${faculty.name}</h3>
+                                    <p style="color: var(--text-muted); font-size: 0.9rem;">${faculty.department}</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 2rem; font-weight: 800; color: ${ratingColor}; line-height: 1;">
+                                        ${faculty.average_rating}
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">Average</div>
+                                    <div style="font-size: 0.8rem; font-weight: 600; margin-top: 4px;">${faculty.total_reviews} Reviews</div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-body); border-radius: var(--radius); padding: 15px; max-height: 300px; overflow-y: auto;">
+                                ${faculty.reviews.length === 0 ? '<p style="color: var(--text-muted); text-align:center; font-size: 0.9rem;">No reviews yet.</p>' : ''}
+                                
+                                ${faculty.reviews.map(review => `
+                                    <div style="background: white; padding: 15px; border-radius: var(--radius); margin-bottom: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; gap: 15px;">
+                                        <div style="flex: 1;">
+                                            <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                                                <span style="font-weight: 700; color: var(--primary);">${review.rating}/10</span>
+                                                <span style="font-size: 0.8rem; color: var(--text-muted);">${new Date(review.submitted_at).toLocaleDateString()}</span>
+                                            </div>
+                                            <p style="font-size: 0.95rem;">${review.content}</p>
+                                        </div>
+                                        <button onclick="deleteReview(${review.feedback_id})" class="btn" style="background: #ffe5e5; color: #c53030; padding: 4px 10px; font-size: 0.8rem; height: fit-content;">Delete</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += blockHtml;
+                });
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div class="alert alert-error">Error: ${err.message}</div>`;
+            }
+        }
+
+        async function deleteReview(feedbackId) {
+            if (!confirm("Are you sure you want to delete this feedback? This cannot be undone.")) return;
+
+            try {
+                await apiRequest(`/feedback/admin/${feedbackId}`, 'DELETE');
+                // Don't alert standard users about success, just refresh
+                loadAdminFeedback();
+            } catch (err) {
+                alert(err.message || "Failed to delete");
+            }
+        }
+
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tab === 'login') {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('register-form').classList.add('hidden');
+            } else {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('register-form').classList.remove('hidden');
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await apiRequest('/auth/register', 'POST', data);
+
+                if (response.requires_verification) {
+                    document.getElementById('login-form').classList.add('hidden');
+                    document.getElementById('register-form').classList.add('hidden');
+                    document.getElementById('otp-form').classList.remove('hidden');
+                    document.getElementById('otp-user-id').value = response.user_id;
+
+                    showMessage('success', response.message);
+                }
+            } catch (error) {
+                showMessage('error', error.message);
+            }
+        }
+
+        async function handleVerifyOTP(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await apiRequest('/auth/verify-registration', 'POST', data);
+                showMessage('success', 'Registration verified! Please login.');
+
+                setTimeout(() => {
+                    document.getElementById('otp-form').classList.add('hidden');
+                    document.getElementById('login-form').classList.remove('hidden');
+                    switchTab('login');
+                }, 2000);
+            } catch (error) {
+                showMessage('error', error.message);
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await apiRequest('/auth/login', 'POST', data);
+
+                if (response.requires_mfa) {
+                    document.getElementById('login-form').classList.add('hidden');
+                    document.getElementById('mfa-form').classList.remove('hidden');
+                    document.getElementById('mfa-temp-token').value = response.temp_token;
+
+                    showMessage('info', response.message);
+                } else {
+                    setAuth(response.token, response.session_id, response.user);
+                    render();
+                }
+            } catch (error) {
+                showMessage('error', error.message);
+            }
+        }
+
+        async function handleVerifyMFA(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await apiRequest('/auth/verify-mfa', 'POST', data);
+                setAuth(response.token, response.session_id, response.user);
+                render();
+            } catch (error) {
+                showMessage('error', error.message);
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                await apiRequest('/auth/logout', 'POST');
+            } catch (error) {
+                console.error('Logout error:', error);
+            } finally {
+                clearAuth();
+                render();
+            }
+        }
+
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById('auth-message');
+            messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        function attachAuthListeners() {
+            // Listeners attached via inline handlers (onsubmit)
+        }
+
+        function attachDashboardListeners() {
+            if (currentUser.role === 'student') {
+                loadFeedbackForStudent();
+            } else if (currentUser.role === 'faculty') {
+                loadFacultyFeedback();
+            } else if (currentUser.role === 'admin') {
+                loadAdminFeedback();
+            }
+        }
+
+        // ============================================
+        // INITIALIZE APP
+        // ============================================
+
+        window.onload = function () {
+            const storedUser = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (storedUser && token) {
+                try {
+                    currentUser = JSON.parse(storedUser);
+                } catch (e) { clearAuth(); }
+            }
+
+            render();
+        };
+    </script>
+</body>
+
+</html>
